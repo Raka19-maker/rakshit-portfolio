@@ -1,0 +1,162 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Midnight and electric lime: a deep navy-black page, near-white type and one
+     vivid accent. The denim and khaki of the hero video pop against it. */
+  --color-paper: #0b0d12;
+  --color-ink: #f2f4f7;
+  --color-signal: #c6ff3d;
+  --color-mist: #10131a;
+  /* Raised surfaces: project cards, the Dark Vector band and the footer. */
+  --color-panel: #161a24;
+  --color-muted: #8b93a1;
+  /* #aeb5c2 keeps small text well above WCAG AA (9:1) on the page */
+  --color-muted-strong: #aeb5c2;
+  --color-line: #232836;
+
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --text-mega: clamp(3.4rem, 11vw, 10.5rem);
+  --text-mega--line-height: 0.86;
+  --text-display: clamp(2.4rem, 6.4vw, 5.75rem);
+  --text-display--line-height: 0.92;
+  --text-title: clamp(1.6rem, 3.2vw, 2.75rem);
+  --text-title--line-height: 1;
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1400px] px-4 sm:px-8 lg:px-12;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[0.72rem] font-medium tracking-[0.22em] uppercase;
+  }
+
+  /* Wrapper that clips a line of type for mask-style reveals. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+  .line-mask > * {
+    display: block;
+  }
+}
+
+/* Hero character framing: a waist-up close shot on the right (feet below the
+   fold), with the body centred near 72% of the width. Width follows the
+   clip's 420x664 aspect, so offsets are expressed in viewport height. */
+.hero-stage {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  height: 85%;
+  /* Centres the clip (288x664) at 70% of the width: right = 30vw - half its rendered width. */
+  right: calc(30vw - 18.4svh);
+}
+@media (min-width: 640px) {
+  .hero-stage {
+    top: 18%;
+    height: 140%;
+    right: calc(28vw - 30.4svh);
+  }
+}
+
+/* 'full' walk mode: the whole shot fits between the nav and the roles band, so
+   he is visible head to feet. It sits to the right of the headline; the shot
+   has a transparent background, so he stands straight on the page. */
+.hero-full {
+  position: absolute;
+  top: 4rem;
+  bottom: 15svh;
+  left: 0;
+  right: 0;
+}
+.hero-full-video {
+  position: absolute;
+  /* Pushed slightly past the right edge so he stops just clear of the headline. */
+  right: -7%;
+  bottom: 0;
+  height: 80%;
+  max-width: 72%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  /* He enters at the frame's left edge; feather it so he steps in out of the page. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12%);
+  mask-image: linear-gradient(to right, transparent 0, #000 12%);
+}
+.hero-full-bg {
+  background: var(--color-paper);
+}
+
+/* Hero text scramble: each split character sits in its own fixed cell while it decodes. */
+.kt-scramble .ch {
+  display: inline-block;
+  white-space: pre;
+  text-align: center;
+}
+
+/* Hero name: an outline that fills with colour, letter by letter, as he walks past. */
+.outline-fill .ch {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-signal);
+  background: linear-gradient(var(--color-signal), var(--color-signal)) no-repeat 0 0 / 0% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Outlined display type for the roles band. */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-ink);
+}
