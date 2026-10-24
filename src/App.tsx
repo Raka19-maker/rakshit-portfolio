@@ -26,7 +26,15 @@ export type MediaState = {
   fullSrc?: string | null
 }
 
-const NO_MEDIA: MediaState = { image: false, video: false, mp4: false, webm: false, resume: false }
+/**
+ * 'full' mode streams its own shot, so it never waits on the probes: on a slow
+ * connection they time out, and the hero would fall back to the placeholder even
+ * though the file is fine. If the shot really fails, the video's onError still
+ * swaps in the placeholder.
+ */
+const FULL_SHOT = heroMedia.walkMode === 'full'
+
+const NO_MEDIA: MediaState = { image: false, video: FULL_SHOT, mp4: false, webm: false, resume: false }
 
 /** Hard ceiling on the preloader, whatever the network does. */
 const PRELOADER_TIMEOUT_MS = 9000
@@ -68,7 +76,7 @@ export default function App() {
         // Either format is enough; browsers without H.264 can still use the WebM.
         mp4: m.ok,
         webm: w.ok,
-        video: m.ok || w.ok,
+        video: m.ok || w.ok || FULL_SHOT,
         videoDuration: m.duration ?? w.duration,
         resume: resume as boolean,
         fullSrc: fullSrc as string | null,
