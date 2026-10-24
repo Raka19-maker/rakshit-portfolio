@@ -2,9 +2,9 @@
  * Single source of truth for every word on the site.
  *
  * Everything here is taken from Rakshit_Tomar_Resume_AppSec.docx and the
- * portfolio brief. Nothing is invented: where the resume carries a
- * placeholder ("[N]", "[GitHub URL]") the value is left out or empty, and
- * empty values are simply not rendered. Fill them in here when confirmed.
+ * portfolio brief. Nothing is invented: values the resume doesn't give are
+ * left empty, and empty values are simply not rendered. Fill them in here
+ * when confirmed.
  */
 
 const base = import.meta.env.BASE_URL
@@ -28,8 +28,8 @@ export const contact = {
   /** Left out of the public code. Add a number and set showPhone to true to display it. */
   phone: '',
   showPhone: false,
-  /** Resume lists "[GitHub URL]" and "[Hack The Box profile URL]" as placeholders. Add real URLs to show them. */
-  github: '',
+  github: 'https://github.com/Raka19-maker',
+  /** Not on the resume yet. Add the profile URL to show it. */
   hackTheBox: '',
 }
 
@@ -49,7 +49,6 @@ export const heroMedia = {
   shotStartAt: 1,
   /** 'full' mode: he first appears just past this letter of the name (0 = R, 1 = A). */
   shotStartLetter: 1,
-  introAudio: asset('intro.mp3'),
   resumePdf: asset('resume.pdf'),
   /**
    * 'translate': the clip walks in place and the site moves it from the left
@@ -62,8 +61,6 @@ export const heroMedia = {
   walkMode: 'full' as 'translate' | 'native' | 'full',
   /** Multiply-blend the clip so a white background disappears into the white hero. */
   blendWhiteBackground: true,
-  /** Set true if walk.mp4 carries the spoken introduction. The sound toggle then unmutes the video. */
-  videoHasSpeech: false,
   /**
    * Playback speed of the walk. The page travel follows the video clock
    * (src/content/walkTrack.ts), so the feet stay planted at any speed.
@@ -100,8 +97,8 @@ export const about = {
   /** Counts taken straight from the resume. */
   stats: [
     { value: 3.5, decimals: 1, suffix: ' yrs', label: 'Application security experience' },
-    { value: 3, decimals: 0, suffix: '', label: 'Security firms' },
-    { value: 4, decimals: 0, suffix: '', label: 'Attack surfaces: web, API, mobile, thick-client' },
+    { value: 170, decimals: 0, suffix: '+', label: 'Web, mobile, API & thick-client apps assessed' },
+    { value: 43, decimals: 0, suffix: '+', label: 'High-risk vulnerabilities found & documented' },
     { value: 3, decimals: 0, suffix: '', label: 'Certifications, one in progress' },
   ],
   lead: 'Application Security Engineer with 3.5 years of web, API, mobile and thick-client security assessments across financial, enterprise and government applications.',
@@ -129,8 +126,8 @@ export type WorkItem = {
   title: string
   context: string
   contribution: string[]
-  stack: string[]
-  outcome: string
+  /** Animated graphic shown beside the card. */
+  visual: 'lifecycle' | 'presenter' | 'review'
   link?: { label: string; href: string }
   note?: string
 }
@@ -138,55 +135,40 @@ export type WorkItem = {
 export const work: WorkItem[] = [
   {
     index: '01',
+    visual: 'lifecycle',
     kind: 'Engagements · Acquisory Consulting LLP',
     title: 'End-to-end client application assessments',
-    context: 'Client-facing web, Android, API and thick-client applications.',
+    context: '50+ client-facing web, Android, API and thick-client applications.',
     contribution: [
       'Runs assessments from vulnerability identification through remediation validation.',
       'Tests manually and with custom scripts for OWASP Top 10, authentication, authorization, input-validation and business-logic flaws.',
       'Builds security testing into development workflows with engineering teams.',
     ],
-    stack: ['Burp Suite', 'OWASP ZAP', 'Postman', 'Custom scripts'],
-    outcome:
-      'Technical vulnerability reports and executive risk summaries aligned with client security and compliance requirements.',
     note: 'Client names and findings are confidential.',
   },
   {
     index: '02',
+    visual: 'presenter',
     kind: 'Engagements · ControlCase International',
     title: 'Financial-sector application testing',
-    context: 'Web, mobile and thick-client applications across application, API and client-side attack surfaces.',
+    context: '120+ financial-sector web, mobile and thick-client applications across application, API and client-side attack surfaces.',
     contribution: [
-      'Discovered, validated and documented high-risk vulnerabilities including XSS, SQL injection and CSRF.',
+      'Discovered, validated and documented 43+ high-risk vulnerabilities including XSS, SQL injection and CSRF.',
       'Ran dynamic application security testing across authentication, authorization, session management, input validation, API security and business logic.',
     ],
-    stack: ['Burp Suite', 'OWASP ZAP', 'Kali Linux'],
-    outcome:
-      'Manual penetration tests delivered with reproducible proof-of-concepts, risk ratings and remediation guidance.',
     note: 'Client names and findings are confidential.',
   },
   {
     index: '03',
+    visual: 'review',
     kind: 'Engagements · CyberQ',
     title: 'Government web apps & APIs under CERT-In',
-    context: 'Government web applications and APIs tested across multiple CERT-In assessment cycles.',
+    context: 'Government web applications and APIs tested across 4 CERT-In assessment cycles.',
     contribution: [
       'Ran automated and manual vulnerability assessments, then validated and triaged the findings.',
       'Fitted vulnerability identification and remediation validation into development and QA cycles.',
     ],
-    stack: ['Burp Suite', 'OWASP ZAP', 'Acunetix'],
-    outcome:
-      'OWASP Top 10 findings documented with evidence, impact analysis and remediation recommendations.',
     note: 'Client names and findings are confidential.',
-  },
-  {
-    index: '04',
-    kind: 'Project · B.Tech final year',
-    title: 'Python web vulnerability scanner',
-    context: 'Final-year project, Guru Gobind Singh Indraprastha University.',
-    contribution: ['Built a scanner that scans web applications and generates the security report.'],
-    stack: ['Python'],
-    outcome: 'Automated scan-to-report workflow for web applications.',
   },
 ]
 
@@ -227,21 +209,58 @@ export const darkVector = {
   legalName: 'Dark Vector Security Solutions',
   role: 'Founder',
   /**
-   * The resume does not describe Dark Vector's services yet, so none are listed.
-   * Add a description and services here once confirmed; they render automatically.
+   * Dark Vector is new: copy describes the practice and the founder's background,
+   * never a client count or track record of its own.
    */
-  description: '',
-  services: [] as string[],
+  tagline: 'Application security testing that finds what scanners miss, and stays until it is fixed.',
+  description:
+    'Dark Vector Security Solutions is a new application security practice founded by Rakshit Tomar, built on his hands-on background testing web, API, mobile and thick-client applications. Each engagement is scoped and tested by him personally, and developers are supported from the first finding to a verified fix.',
   website: '',
-  /** Shown while services are empty: the founder's verified practice areas. */
-  practiceAreas: [
-    'Web application penetration testing',
-    'API security assessments',
-    'Mobile (Android) application testing',
-    'Thick-client assessments',
-    'Remediation validation',
-    'Technical & executive reporting',
-  ],
+  offerings: [
+    {
+      icon: 'web',
+      title: 'Web application testing',
+      body: 'Manual and tool-assisted testing against the OWASP Top 10, authentication, authorization and business logic.',
+    },
+    {
+      icon: 'api',
+      title: 'API security',
+      body: 'REST and GraphQL APIs: OAuth 2.0, JWT, access control, session handling and rate limits.',
+    },
+    {
+      icon: 'mobile',
+      title: 'Mobile & thick-client',
+      body: 'Android apps and desktop clients, across their API and client-side attack surfaces.',
+    },
+    {
+      icon: 'report',
+      title: 'Reporting & retest',
+      body: 'Technical reports and executive risk summaries aligned to compliance needs, then every fix validated.',
+    },
+  ] as const,
+  /** Dark Vector is new, so these are commitments, not a track record: no numbers or past-client claims. */
+  why: [
+    {
+      icon: 'founder',
+      title: 'Founder-led',
+      body: 'Every engagement is tested personally by the founder, never handed off to juniors.',
+    },
+    {
+      icon: 'manual',
+      title: 'Manual-first testing',
+      body: 'Time goes into the logic and access-control flaws that automated scanners miss.',
+    },
+    {
+      icon: 'actionable',
+      title: 'Reports developers can act on',
+      body: 'Clear reproduction steps, impact and fix guidance for every finding.',
+    },
+    {
+      icon: 'retest',
+      title: 'Retest until fixed',
+      body: 'Fixes are verified, not just reported, before a finding is closed.',
+    },
+  ] as const,
 }
 
 export type TimelineItem = {
@@ -260,7 +279,7 @@ export const timeline: TimelineItem[] = [
     org: 'Acquisory Consulting LLP',
     type: 'experience',
     points: [
-      'End-to-end assessments of web, Android, API and thick-client applications.',
+      'End-to-end assessments of 50+ web, Android, API and thick-client applications.',
       'Triage, remediation guidance and fix validation with development teams.',
       'Technical reports and executive risk summaries.',
     ],
@@ -271,8 +290,8 @@ export const timeline: TimelineItem[] = [
     org: 'ControlCase International Pvt. Ltd.',
     type: 'experience',
     points: [
-      'Assessed financial-sector web, mobile and thick-client applications.',
-      'Found and documented high-risk XSS, SQLi and CSRF vulnerabilities.',
+      'Assessed 120+ financial-sector web, mobile and thick-client applications.',
+      'Found and documented 43+ high-risk XSS, SQLi and CSRF vulnerabilities.',
       'Manual penetration tests with reproducible proof-of-concepts.',
     ],
   },
@@ -282,7 +301,7 @@ export const timeline: TimelineItem[] = [
     org: 'CyberQ Pvt. Ltd.',
     type: 'experience',
     points: [
-      'Tested government web applications and APIs under CERT-In.',
+      'Tested government web applications and APIs under CERT-In across 4 assessment cycles.',
       'Automated and manual assessments with Burp Suite, OWASP ZAP and Acunetix.',
     ],
   },

@@ -32,3 +32,6 @@ dist-ssr
 
 # Earlier versions of the hero media, kept locally only
 public/assets/previous*/
+
+# Resume source; the site links its own PDF copy
+/*.docx

@@ -29,7 +29,6 @@ npm run preview  # serve the production build
 - **Neither** → a marked "character asset slot" silhouette.
 - **Reduced motion** → no walk, no letter animation; the still image sits in its final place and all text is visible immediately.
 - **Autoplay refused / video error** → falls back to the still image without stopping the timeline.
-- Sound: shown only when `intro.mp3` exists, or `videoHasSpeech: true` is set for a clip with speech. Starts muted, opt-in via button.
 
 If the walking clip already moves left-to-right inside its own frame, set `heroMedia.walkMode = 'native'` in `src/content/site.ts`.
 

@@ -12,7 +12,7 @@ function Row({ outline = false }: { outline?: boolean }) {
   const items = [...ROLES, ...ROLES, ...ROLES]
   return (
     <p
-      className={`flex w-max items-center gap-[0.35em] font-display text-[clamp(3.5rem,min(19svh,15vw),13rem)] leading-[0.92] font-black tracking-[-0.04em] whitespace-nowrap ${
+      className={`flex w-max items-center gap-[0.35em] font-display text-[clamp(2.25rem,min(11svh,7vw),7.5rem)] leading-[0.92] font-black tracking-[-0.04em] whitespace-nowrap ${
         outline ? 'text-outline' : 'text-ink'
       }`}
     >
@@ -78,7 +78,7 @@ export function Marquee() {
     <section
       ref={ref}
       aria-label="Roles"
-      className="pointer-events-none relative z-20 -mt-[14svh] overflow-hidden border-b border-line pb-10 sm:pb-16"
+      className="pointer-events-none relative z-20 -mt-[14svh] overflow-hidden pb-10 sm:pb-16"
     >
       <p className="sr-only">{ROLES.join(', ')}</p>
       <div aria-hidden="true" className="flex flex-col gap-1 sm:gap-3">

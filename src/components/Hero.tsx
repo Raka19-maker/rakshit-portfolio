@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight, Volume2, VolumeX } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { heroMedia, person } from '../content/site'
 import { shotWalk } from '../content/shotWalk'
@@ -52,10 +52,8 @@ export function Hero({ play, media, reducedMotion }: Props) {
   const stage = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const shot = useRef<HTMLVideoElement>(null)
-  const audio = useRef<HTMLAudioElement>(null)
 
   const [videoFailed, setVideoFailed] = useState(false)
-  const [soundOn, setSoundOn] = useState(false)
 
   // Reduced motion always gets the still image when one exists.
   const useVideo = media.video && !videoFailed && !(reducedMotion && media.image)
@@ -63,7 +61,6 @@ export function Hero({ play, media, reducedMotion }: Props) {
   // 'full': the transparent shot plays as it is, in front of the page: he walks in,
   // the name appears as his body reaches each letter, then he turns to camera.
   const fullFrame = useVideo && heroMedia.walkMode === 'full'
-  const speech = media.audio ? 'audio' : useVideo && heroMedia.videoHasSpeech ? 'video' : null
 
   const startVideo = useCallback((from = 0) => {
     const v = video.current
@@ -374,33 +371,6 @@ export function Hero({ play, media, reducedMotion }: Props) {
     { scope: root, dependencies: [reducedMotion] },
   )
 
-  const toggleSound = () => {
-    const next = !soundOn
-    setSoundOn(next)
-    if (speech === 'audio' && audio.current) {
-      const a = audio.current
-      if (next) {
-        a.currentTime = 0
-        a.play().catch(() => setSoundOn(false))
-      } else {
-        a.pause()
-      }
-    } else if (speech === 'video' && fullFrame && shot.current) {
-      const s = shot.current
-      s.muted = !next
-      // Replay the shot so it is heard from the start.
-      if (next && s.ended) {
-        s.currentTime = 0
-        s.play().catch(() => setSoundOn(false))
-      }
-    } else if (speech === 'video' && video.current) {
-      const v = video.current
-      v.muted = !next
-      // Replay the walk so the clip is heard from the start.
-      if (next && v.ended) startVideo(0)
-    }
-  }
-
   return (
     <section
       ref={root}
@@ -437,7 +407,7 @@ export function Hero({ play, media, reducedMotion }: Props) {
       >
         <div data-character={fullFrame ? undefined : true} className="relative h-full">
           {fullFrame ? null : useVideo ? (
-            // Decorative and aria-hidden; any speech is printed as the intro line.
+            // Decorative, muted and aria-hidden.
             // oxlint-disable-next-line jsx-a11y/media-has-caption
             <video
               ref={video}
@@ -467,10 +437,6 @@ export function Hero({ play, media, reducedMotion }: Props) {
           )}
         </div>
       </div>
-
-      {/* The spoken line is printed in full below, so the page text is its transcript. */}
-      {/* oxlint-disable-next-line jsx-a11y/media-has-caption */}
-      {media.audio && <audio ref={audio} src={heroMedia.introAudio} preload="none" onEnded={() => setSoundOn(false)} />}
 
       <div data-hero-copy className="container-x relative z-10 flex flex-col justify-start pt-28 sm:justify-center sm:pt-16">
         <h1
@@ -530,30 +496,10 @@ export function Hero({ play, media, reducedMotion }: Props) {
             >
               Get in touch
             </a>
-            {speech && (
-              <button
-                type="button"
-                onClick={toggleSound}
-                aria-pressed={soundOn}
-                className="eyebrow inline-flex items-center gap-2 pb-1 font-semibold text-muted-strong transition-colors hover:text-ink"
-              >
-                {soundOn ? <Volume2 className="size-3.5" aria-hidden="true" /> : <VolumeX className="size-3.5" aria-hidden="true" />}
-                {soundOn ? 'Sound on' : 'Play with sound'}
-              </button>
-            )}
           </div>
         </div>
       </div>
 
-      <div data-hero-scroll className="absolute bottom-6 left-4 z-10 sm:left-8 lg:left-12">
-        <a
-          href="#about"
-          data-hero-fade
-          className="eyebrow hidden items-center gap-2 text-muted-strong hover:text-ink sm:inline-flex"
-        >
-          <ArrowDown className="size-3.5" aria-hidden="true" /> Scroll
-        </a>
-      </div>
     </section>
   )
 }

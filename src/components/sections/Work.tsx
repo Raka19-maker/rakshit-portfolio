@@ -1,37 +1,9 @@
 import { ArrowUpRight, Lock } from 'lucide-react'
 import { useRef } from 'react'
-import { work, type WorkItem } from '../../content/site'
+import { work } from '../../content/site'
 import { useReveal } from '../../hooks/useReveal'
+import { EngagementVisual } from '../EngagementVisual'
 import { SectionHeading } from '../SectionHeading'
-
-function Preview({ item }: { item: WorkItem }) {
-  // Typographic preview: no screenshots exist, and none are faked.
-  return (
-    <div
-      className="relative flex aspect-[4/3] w-full flex-col justify-between overflow-hidden bg-panel p-6 text-ink sm:p-8 lg:aspect-auto lg:h-full lg:min-h-[420px]"
-      aria-hidden="true"
-    >
-      <div className="flex items-center justify-between font-mono text-[0.65rem] tracking-[0.2em] text-ink/60">
-        <span>{item.kind.split('·')[0].trim().toUpperCase()}</span>
-        <span className="flex items-center gap-2">
-          <span className="size-1.5 rounded-full bg-signal" />
-          {item.index}
-        </span>
-      </div>
-      <p className="font-display text-[clamp(5rem,14vw,11rem)] leading-[0.8] font-black tracking-[-0.06em] text-ink/[0.07]">
-        {item.index}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {item.stack.map((s) => (
-          <span key={s} className="border border-ink/20 px-2.5 py-1 font-mono text-[0.68rem] text-ink/80">
-            {s}
-          </span>
-        ))}
-      </div>
-      <div className="absolute top-0 right-0 h-full w-[3px] bg-signal" />
-    </div>
-  )
-}
 
 export function Work() {
   const ref = useRef<HTMLElement>(null)
@@ -46,7 +18,7 @@ export function Work() {
           {work.map((item, i) => (
             <li key={item.index} className="grid gap-8 lg:grid-cols-12 lg:gap-12">
               <div data-reveal className={`lg:col-span-6 ${i % 2 ? 'lg:order-2' : ''}`}>
-                <Preview item={item} />
+                <EngagementVisual item={item} />
               </div>
 
               <article className={`flex flex-col lg:col-span-6 ${i % 2 ? 'lg:order-1' : ''}`}>
@@ -72,14 +44,6 @@ export function Work() {
                         ))}
                       </ul>
                     </dd>
-                  </div>
-                  <div data-reveal>
-                    <dt className="eyebrow text-muted-strong">Stack</dt>
-                    <dd className="mt-2">{item.stack.join(' · ')}</dd>
-                  </div>
-                  <div data-reveal>
-                    <dt className="eyebrow text-muted-strong">Outcome</dt>
-                    <dd className="mt-2 font-medium">{item.outcome}</dd>
                   </div>
                 </dl>
 

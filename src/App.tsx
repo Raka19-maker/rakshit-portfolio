@@ -20,14 +20,13 @@ export type MediaState = {
   video: boolean
   mp4: boolean
   webm: boolean
-  audio: boolean
   resume: boolean
   videoDuration?: number
   /** Fully downloaded copy of the hero video, when preloading succeeded. */
   fullSrc?: string | null
 }
 
-const NO_MEDIA: MediaState = { image: false, video: false, mp4: false, webm: false, audio: false, resume: false }
+const NO_MEDIA: MediaState = { image: false, video: false, mp4: false, webm: false, resume: false }
 
 /** Hard ceiling on the preloader, whatever the network does. */
 const PRELOADER_TIMEOUT_MS = 9000
@@ -48,7 +47,6 @@ export default function App() {
       probeImage(heroMedia.image),
       probeMedia(heroMedia.videoMp4, 'video'),
       probeMedia(heroMedia.videoWebm, 'video'),
-      probeMedia(heroMedia.introAudio, 'audio'),
       fileExists(heroMedia.resumePdf),
       // The hero walk is the first thing seen; download it whole so it never stutters.
       heroMedia.walkMode === 'full' ? preloadVideo(heroMedia.videoFull) : Promise.resolve(null),
@@ -61,7 +59,7 @@ export default function App() {
       }),
     )
 
-    Promise.all(tasks).then(([, image, mp4, webm, audio, resume, fullSrc]) => {
+    Promise.all(tasks).then(([, image, mp4, webm, resume, fullSrc]) => {
       if (cancelled) return
       const m = mp4 as MediaProbe
       const w = webm as MediaProbe
@@ -72,7 +70,6 @@ export default function App() {
         webm: w.ok,
         video: m.ok || w.ok,
         videoDuration: m.duration ?? w.duration,
-        audio: (audio as MediaProbe).ok,
         resume: resume as boolean,
         fullSrc: fullSrc as string | null,
       })
