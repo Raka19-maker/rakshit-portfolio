@@ -53,8 +53,9 @@ export default function App() {
     const tasks: Promise<unknown>[] = [
       document.fonts?.ready ?? Promise.resolve(),
       probeImage(heroMedia.image),
-      probeMedia(heroMedia.videoMp4, 'video'),
-      probeMedia(heroMedia.videoWebm, 'video'),
+      // The walk-in-place clips are only played outside 'full' mode; don't spend bandwidth on them.
+      FULL_SHOT ? Promise.resolve({ ok: false }) : probeMedia(heroMedia.videoMp4, 'video'),
+      FULL_SHOT ? Promise.resolve({ ok: false }) : probeMedia(heroMedia.videoWebm, 'video'),
       fileExists(heroMedia.resumePdf),
       // The hero walk is the first thing seen; download it whole so it never stutters.
       heroMedia.walkMode === 'full' ? preloadVideo(heroMedia.videoFull) : Promise.resolve(null),

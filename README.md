@@ -15,7 +15,7 @@ npm run preview  # serve the production build
 | Path | What |
 | --- | --- |
 | `src/content/site.ts` | **All copy**, links and hero media settings. Sourced from the resume only. |
-| `public/assets/` | Asset slots: `character.png`, `walk.mp4` / `walk.webm`, optional `intro.mp3`, `resume.pdf`. See the README there. |
+| `public/assets/` | Asset slots: `character.webp`, `walk.mp4` / `walk.webm`, optional `intro.mp3`, `resume.pdf`. See the README there. |
 | `src/components/Preloader.tsx` | White preloader, letter reveal, real-progress red line, clip-path exit. |
 | `src/components/Hero.tsx` | Character walk-in + typography timeline, sound toggle, fallbacks. |
 | `src/components/sections/` | About, Work, Skills, Dark Vector, Experience, Contact + footer. |
@@ -25,7 +25,7 @@ npm run preview  # serve the production build
 
 - The preloader waits only for fonts and a metadata check of the hero media, each capped at 4s, with a 6s hard ceiling.
 - **Video present** → plays muted inline. The clip has its background removed and walks in place; the page moves it by the clip's own foot track (`src/content/walkTrack.ts`, read from the video clock), so planted feet don't slide. The headline renders letter by letter in his wake as he passes, and whatever he hasn't passed renders when he stops. The clip is never mirrored. Safari gets the white-background MP4, multiply-blended into the page.
-- **Only `character.png`** → the still image makes the same walk with a light step rhythm.
+- **Only `character.webp`** → the still image makes the same walk with a light step rhythm.
 - **Neither** → a marked "character asset slot" silhouette.
 - **Reduced motion** → no walk, no letter animation; the still image sits in its final place and all text is visible immediately.
 - **Autoplay refused / video error** → falls back to the still image without stopping the timeline.

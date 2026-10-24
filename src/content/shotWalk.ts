@@ -1,5 +1,6 @@
 /**
- * Generated from public/assets/walk-full.webm (1920x1080, 30 fps): the centre of
+ * Generated from public/assets/walk-full.webm (1920x1080 then, now 1280x720; the
+ * maths only uses the 16:9 ratio, so the numbers still hold) at 30 fps: the centre of
  * his torso per frame, as a fraction of the frame width. The hero renders each
  * letter of the headline as his body reaches it. Regenerate if the clip changes.
  */

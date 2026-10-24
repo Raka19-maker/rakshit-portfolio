@@ -34,7 +34,7 @@ export const contact = {
 }
 
 export const heroMedia = {
-  image: asset('character.png'),
+  image: asset('character.webp'),
   videoMp4: asset('walk.mp4'),
   videoWebm: asset('walk.webm'),
   /**
@@ -44,7 +44,7 @@ export const heroMedia = {
    */
   videoFull: asset('walk-full.webm'),
   videoFullMp4: asset('walk-full.mp4'),
-  poster: asset('walk-poster.png'),
+  poster: asset('walk-poster.webp'),
   /** 'full' mode: second of the shot to start from (he is fully in frame by then). */
   shotStartAt: 1,
   /** 'full' mode: he first appears just past this letter of the name (0 = R, 1 = A). */

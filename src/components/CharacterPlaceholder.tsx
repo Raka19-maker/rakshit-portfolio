@@ -1,5 +1,5 @@
 /**
- * Stand-in for the character until public/assets/character.png or walk.mp4
+ * Stand-in for the character until public/assets/character.webp or walk.mp4
  * is supplied. Clearly marked as an asset slot so it is never mistaken for
  * the final artwork.
  */
